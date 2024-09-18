@@ -32,6 +32,9 @@ class BasicTextPreprocessing:
         return self
         
     def transform(self, X, y=None):  
+        if isinstance(X, list):
+            X = pd.Series(X)
+            X = X.str.lower()
         
         def keep_text_only(input_string):   
             result = re.findall(r'[a-zA-Z\s]+', input_string)   
@@ -47,11 +50,11 @@ class BasicTextPreprocessing:
         def remove_punctuation(row):   
             return row.translate(str.maketrans('', '', string.punctuation)) 
 
-        def spell_correction(row):
-            l = []
-            for i in row.split():
-                l.append(str(TextBlob(i).correct()))
-            return ' '.join(l)
+        # def spell_correction(row):
+        #     l = []
+        #     for i in row.split():
+        #         l.append(str(TextBlob(i).correct()))
+        #     return ' '.join(l)
             
         def remove_stopwords(text):
             stop_words = set(stopwords.words('english'))
@@ -76,13 +79,13 @@ class DataTransformation:
 
     def start_transformation(self):
         try:
-            df = pd.read_csv(self.config.processed_data_path)
+            df = pd.read_csv(self.config.raw_data_path)
             transformer = Pipeline(steps=[
                 ('basic preprocessing', BasicTextPreprocessing()),
                 ('count vectorization', CountVectorizer(max_features=10000)),
                 ('tf-idf', TfidfTransformer())
             ])
-            transformed_data = transformer.transform(df['tags']).toarray()
+            transformed_data = transformer.fit_transform(df['tags']).toarray()
             with open(self.config.processed_model_dir + 'transformer.pkl', 'wb') as f:
                 pickle.dump(transformer, f)
             # store numpy array to disk
