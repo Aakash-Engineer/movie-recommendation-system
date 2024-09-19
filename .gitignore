@@ -23,3 +23,6 @@ config/config.yaml
 # Ignore temporary files
 *.tmp
 *.temp
+
+# Ignore artifacts directory
+artifacts/processed/data/
