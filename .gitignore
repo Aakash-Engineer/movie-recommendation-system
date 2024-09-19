@@ -26,3 +26,4 @@ config/config.yaml
 
 # Ignore artifacts directory
 artifacts/processed/data/
+
