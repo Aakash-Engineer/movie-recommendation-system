@@ -4,13 +4,9 @@ from mrs.pipeline.predict import Prediction
 
 
 try:
-    # data_ingestion = DataIngestion()
-    # data_ingestion.start_ingestion()
-    # data_transformation = DataTransformation()
-    # data_transformation.start_transformation()
-    prediction = Prediction()
-    text = 'I love this movie'
-    print(prediction.start_prediction(text))
-    
+    data_ingestion = DataIngestion()
+    data_ingestion.start_ingestion()
+    data_transformation = DataTransformation()
+    data_transformation.start_transformation()    
 except Exception as e:
     raise e

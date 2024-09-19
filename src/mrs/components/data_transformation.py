@@ -82,9 +82,10 @@ class DataTransformation:
             df = pd.read_csv(self.config.raw_data_path)
             transformer = Pipeline(steps=[
                 ('basic preprocessing', BasicTextPreprocessing()),
-                ('count vectorization', CountVectorizer(max_features=10000)),
+                ('count vectorization', CountVectorizer(max_features=5000)),
                 ('tf-idf', TfidfTransformer())
             ])
+            os.makedirs(self.config.processed_data_dir, exist_ok=True)
             transformed_data = transformer.fit_transform(df['tags']).toarray()
             with open(self.config.processed_model_dir + 'transformer.pkl', 'wb') as f:
                 pickle.dump(transformer, f)
