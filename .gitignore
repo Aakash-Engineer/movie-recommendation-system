@@ -25,5 +25,5 @@ config/config.yaml
 *.temp
 
 # Ignore artifacts directory
-artifacts/processed/data/
+# artifacts/processed/data/
 

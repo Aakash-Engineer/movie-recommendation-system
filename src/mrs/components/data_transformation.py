@@ -7,13 +7,13 @@ import nltk
 import string
 import numpy as np
 import pandas as pd
-from textblob import TextBlob
+# from textblob import TextBlob
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.metrics.pairwise import cosine_similarity 
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
 
 
@@ -72,25 +72,33 @@ class BasicTextPreprocessing:
         X = X.apply(remove_stopwords)  
         X = X.apply(lemmatization)
         return X.values
+    
         
 class DataTransformation:
     def __init__(self) -> None:
         self.config = DataTransformationConfig()
+        print('DataTransformationConfig', self.config)
 
     def start_transformation(self):
+
         try:
+            
             df = pd.read_csv(self.config.raw_data_path)
             transformer = Pipeline(steps=[
                 ('basic preprocessing', BasicTextPreprocessing()),
-                ('count vectorization', CountVectorizer(max_features=5000)),
-                ('tf-idf', TfidfTransformer())
+                ('count vectorization', TfidfVectorizer(max_features=5000)),
             ])
             os.makedirs(self.config.processed_data_dir, exist_ok=True)
-            transformed_data = transformer.fit_transform(df['tags']).toarray()
+            transformed_data = transformer.fit_transform(df['tags']).toarray().astype(np.float16)
+
+            print('Dtype of transfromer', transformed_data.dtype)
+            os.makedirs(self.config.processed_model_dir, exist_ok=True)
+
             with open(self.config.processed_model_dir + 'transformer.pkl', 'wb') as f:
                 pickle.dump(transformer, f)
-            # store numpy array to disk
-            np.save(self.config.processed_data_dir + 'transformed_data.npy', transformed_data)
+            # store numpy and  array to disk
+            np.save(self.config.processed_data_dir + 'transformed_data.npy', transformed_data.astype(np.float16))
+            print('Data transformation completed.')
         except Exception as e:
             raise Exception(f'Error transforming data: {e}')
         
