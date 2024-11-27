@@ -7,8 +7,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 class PredictionConfig:
-    prediction_data_path = Path('../artifacts/processed/data/transformed_data.npy')
-    prediction_model_path = Path('../artifacts/processed/models/transformer.pkl')
+    prediction_data_path = Path('artifacts/processed/data/transformed_data.npy')
+    prediction_model_path = Path('artifacts/processed/models/transformer.pkl')
 
 
 class Prediction:
