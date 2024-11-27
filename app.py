@@ -44,17 +44,17 @@ if st.button("🔍 Recommend Similar Movies"):
     recommended_movies = movies_df.iloc[top_movie_indices[1:]]['title'].tolist()
     recommended_movies_id = movies_df.iloc[top_movie_indices[1:]]['id'].tolist()
     images_url = fetch_movie_image(recommended_movies_id)
-
+    
     # Display recommendations with a more structured layout
     st.markdown("<h2 style='text-align: left; color: #FF6347;'>Recommended Movies</h2>", unsafe_allow_html=True)
     st.markdown("---")
-
+    
     for idx, movie_id in enumerate(recommended_movies_id):
         movie_details = movies_df[movies_df['id'] == movie_id].iloc[0]
         col1, col2 = st.columns([1, 3])
         
         with col1:
-            st.image(images_url[idx], use_column_width=True)
+            st.image(images_url[idx], use_container_width=True)
         
         with col2:
             st.markdown(f"### {movie_details['title']}")
