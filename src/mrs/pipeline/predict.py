@@ -11,8 +11,8 @@ from pathlib import Path
 class PredictionConfig:
     def __init__(self):
         # Use relative paths that will work on Streamlit Cloud
-        self.prediction_data_path = Path('artifacts/processed/data/transformed_data.npy')
-        self.prediction_model_path = Path('artifacts/processed/models/transformer.pkl')
+        self.prediction_data_path = Path('artifacts\processed\data\transformed_data.npy')
+        self.prediction_model_path = Path('artifacts\processed\models\transformer.pkl')
 
 
 # src/mrs/pipeline/predict.py
